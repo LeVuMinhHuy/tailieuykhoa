@@ -6,6 +6,7 @@ import "typeface-rubik";
 import "@fontsource/ibm-plex-mono";
 import { firebaseConfig } from "./firebase-config.ts";
 import { productsCollection } from "./collections/products.tsx";
+import { postCollection } from "./collections/posts.tsx";
 
 export default function App() {
   const myAuthenticator: Authenticator<FirebaseUser> = useCallback(
@@ -34,10 +35,10 @@ export default function App() {
 
   return (
     <FirebaseCMSApp
-      name={"My Online Shop"}
+      name={"Tai lieu y khoa"}
       plugins={[dataEnhancementPlugin]}
       authentication={myAuthenticator}
-      collections={[productsCollection]}
+      collections={[postCollection]}
       firebaseConfig={firebaseConfig}
     />
   );
