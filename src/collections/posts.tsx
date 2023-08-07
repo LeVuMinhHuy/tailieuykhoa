@@ -1,4 +1,5 @@
 import { EntityReference, buildCollection } from "firecms";
+import { Roles } from "../consts/auth.consts";
 
 export type Post = {
   title: string;
@@ -51,55 +52,51 @@ export const postCollection = buildCollection<Post>({
   path: "posts",
   icon: "ArticleIcon",
   group: "Data",
-  permissions: ({ authController, user }) => ({
-    read: true,
-    edit: true,
-    create: true,
-    delete: true,
-  }),
+  permissions: ({ authController }) => {
+    const isAdmin = authController.extra?.roles.includes(Roles.ADMIN);
+    return {
+      edit: isAdmin,
+      create: isAdmin,
+      delete: isAdmin,
+      read: isAdmin,
+    };
+  },
   properties: {
     title: {
       name: "Title",
       validation: { required: true, requiredMessage: "Title is required" },
       dataType: "string",
     },
-    download: {
-      name: "Download Options",
+    content: {
+      name: "Content",
       dataType: "map",
       properties: {
-        show: {
-          name: "Show",
-          dataType: "boolean",
-        },
-        link: {
-          name: "Link",
+        files: {
           dataType: "string",
-        },
-        text: {
-          name: "Display Text",
-          dataType: "string",
-        },
-      },
-      expanded: true,
-    },
-    share: {
-      name: "Share Options",
-      dataType: "map",
-      properties: {
-        show: {
-          name: "Show",
-          dataType: "boolean",
-        },
-        socials: {
-          name: "Socials",
-          dataType: "array",
-          of: {
-            dataType: "string",
-            enumValues: ShareSocial,
+          name: "File",
+          storage: {
+            storagePath: "files",
+            //acceptedFiles: ["image/*", "pdf/*" ],
+            metadata: {
+              cacheControl: "max-age=1000000",
+            },
           },
         },
+        text: {
+          dataType: "string",
+          name: "Text",
+          markdown: true,
+        },
       },
-      expanded: true,
+    },
+    categories: {
+      name: "Categories",
+      validation: { required: true },
+      dataType: "array",
+      of: {
+        dataType: "string",
+        enumValues: PostCategories,
+      },
     },
     publish_metadata: {
       name: "Publish Metadata",
@@ -143,43 +140,51 @@ export const postCollection = buildCollection<Post>({
       },
       expanded: true,
     },
-    categories: {
-      name: "Categories",
-      validation: { required: true },
-      dataType: "array",
-      of: {
-        dataType: "string",
-        enumValues: PostCategories,
-      },
-    },
-    content: {
-      name: "Content",
-      dataType: "map",
-      properties: {
-        files: {
-          dataType: "string",
-          name: "File",
-          storage: {
-            storagePath: "files",
-            //acceptedFiles: ["image/*", "pdf/*" ],
-            metadata: {
-              cacheControl: "max-age=1000000",
-            },
-          },
-        },
-        text: {
-          dataType: "string",
-          name: "Text",
-          markdown: true,
-        },
-      },
-    },
     views: {
       name: "Views",
       validation: {
         min: 0,
       },
       dataType: "number",
+    },
+
+    download: {
+      name: "Download Options",
+      dataType: "map",
+      properties: {
+        show: {
+          name: "Show",
+          dataType: "boolean",
+        },
+        link: {
+          name: "Link",
+          dataType: "string",
+        },
+        text: {
+          name: "Display Text",
+          dataType: "string",
+        },
+      },
+      expanded: true,
+    },
+    share: {
+      name: "Share Options",
+      dataType: "map",
+      properties: {
+        show: {
+          name: "Show",
+          dataType: "boolean",
+        },
+        socials: {
+          name: "Socials",
+          dataType: "array",
+          of: {
+            dataType: "string",
+            enumValues: ShareSocial,
+          },
+        },
+      },
+      expanded: true,
     },
     metadata: {
       name: "Metadata",

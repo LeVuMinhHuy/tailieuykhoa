@@ -7,21 +7,17 @@ import "@fontsource/ibm-plex-mono";
 import { firebaseConfig } from "./firebase-config.ts";
 import { productsCollection } from "./collections/products.tsx";
 import { postCollection } from "./collections/posts.tsx";
+import { Roles } from "./consts/auth.consts.ts";
 
 export default function App() {
   const myAuthenticator: Authenticator<FirebaseUser> = useCallback(
     async ({ user, authController }) => {
-      if (user?.email?.includes("flanders")) {
-        throw Error("Stupid Flanders!");
+      if (user?.email === "levuminhhuy.compsci@gmail.com") {
+        authController.setExtra({ roles: Roles.ADMIN });
+        return true;
       }
 
-      console.log("Allowing access to", user?.email);
-      // This is an example of retrieving async data related to the user
-      // and storing it in the controller's extra field.
-      const sampleUserRoles = await Promise.resolve(["admin"]);
-      authController.setExtra(sampleUserRoles);
-
-      return true;
+      return false;
     },
     []
   );
