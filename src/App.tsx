@@ -5,9 +5,10 @@ import { Authenticator, FirebaseCMSApp } from "firecms";
 import "typeface-rubik";
 import "@fontsource/ibm-plex-mono";
 import { firebaseConfig } from "./firebase-config.ts";
-import { productsCollection } from "./collections/products.tsx";
 import { postCollection } from "./collections/posts.tsx";
 import { Roles } from "./consts/auth.consts.ts";
+import { folderCollection } from "./collections/folders.tsx";
+import { userCollection } from "./collections/users.tsx";
 
 export default function App() {
   const myAuthenticator: Authenticator<FirebaseUser> = useCallback(
@@ -31,10 +32,10 @@ export default function App() {
 
   return (
     <FirebaseCMSApp
-      name={"Tai lieu y khoa"}
+      name={"Tài liệu y khoa"}
       plugins={[dataEnhancementPlugin]}
       authentication={myAuthenticator}
-      collections={[postCollection]}
+      collections={[postCollection, folderCollection, userCollection]}
       firebaseConfig={firebaseConfig}
     />
   );

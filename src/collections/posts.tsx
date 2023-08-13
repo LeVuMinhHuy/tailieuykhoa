@@ -1,8 +1,21 @@
 import { EntityReference, buildCollection } from "firecms";
 import { Roles } from "../consts/auth.consts";
+import { PostCategories, PostStatus, ShareSocial } from "../enums/posts.enum";
 
 export type Post = {
   title: string;
+  content: {
+    files: string[];
+    text: string;
+  }[];
+  folders: EntityReference[];
+  categories: string[];
+  status: PostStatus;
+  publish_metadata: {
+    date: Date;
+    publisher: EntityReference;
+    tags: string[];
+  };
   download: {
     show: boolean;
     link: string;
@@ -12,32 +25,10 @@ export type Post = {
     show: boolean;
     socials: ShareSocial[];
   };
-  publish_metadata: {
-    date: Date;
-    publisher: Publisher;
-    tags: string[];
-  };
-  content: {
-    files: string[];
-    text: string;
-  };
   views: number;
   metadata: object;
-  categories: string[];
   related_posts: EntityReference[];
 };
-
-enum ShareSocial {
-  Link = "link",
-  Facebook = "facebook",
-  Zalo = "zalo",
-}
-
-enum PostCategories {
-  Documents = "documents",
-  Exams = "exams",
-  Books = "books",
-}
 
 type Publisher = {
   name: string;
@@ -50,7 +41,7 @@ export const postCollection = buildCollection<Post>({
   name: "Posts",
   singularName: "Post",
   path: "posts",
-  icon: "ArticleIcon",
+  icon: "Article",
   group: "Data",
   permissions: ({ authController }) => {
     const isAdmin = authController.extra?.roles.includes(Roles.ADMIN);
@@ -66,31 +57,50 @@ export const postCollection = buildCollection<Post>({
       name: "Title",
       validation: { required: true, requiredMessage: "Title is required" },
       dataType: "string",
+      multiline: true,
     },
     content: {
       name: "Content",
-      dataType: "map",
-      properties: {
-        files: {
-          dataType: "array",
-          name: "File",
-          of: {
-            dataType: "string",
-            storage: {
-              storagePath: "files",
-              //acceptedFiles: ["image/*", "pdf/*" ],
-              metadata: {
-                cacheControl: "max-age=1000000",
+      dataType: "array",
+      oneOf: {
+        typeField: "type",
+        valueField: "value",
+        properties: {
+          files: {
+            dataType: "array",
+            name: "File",
+            of: {
+              dataType: "string",
+              storage: {
+                storagePath: "files",
+                //acceptedFiles: ["image/*", "pdf/*" ],
+                metadata: {
+                  cacheControl: "max-age=1000000",
+                },
               },
             },
           },
-        },
-        text: {
-          dataType: "string",
-          name: "Text",
-          markdown: true,
+          text: {
+            dataType: "string",
+            name: "Text",
+            markdown: true,
+          },
         },
       },
+    },
+    folders: {
+      name: "Folders",
+      dataType: "array",
+      of: {
+        dataType: "reference",
+        path: "folders",
+        previewProperties: ["name", "parents"],
+      },
+    },
+    status: {
+      dataType: "string",
+      name: "Status",
+      enumValues: PostStatus,
     },
     categories: {
       name: "Categories",
@@ -111,25 +121,9 @@ export const postCollection = buildCollection<Post>({
         },
         publisher: {
           name: "Publisher",
-          dataType: "map",
-          properties: {
-            name: {
-              name: "Name",
-              dataType: "string",
-            },
-            avatar: {
-              name: "Avatar",
-              dataType: "string",
-            },
-            link: {
-              name: "Link",
-              dataType: "string",
-            },
-            id: {
-              name: "Id",
-              dataType: "string",
-            },
-          },
+          dataType: "reference",
+          path: "users",
+          previewProperties: ["name", "avatar", "role"],
         },
         tags: {
           name: "Tags",
@@ -150,7 +144,6 @@ export const postCollection = buildCollection<Post>({
       },
       dataType: "number",
     },
-
     download: {
       name: "Download Options",
       dataType: "map",
@@ -158,10 +151,12 @@ export const postCollection = buildCollection<Post>({
         show: {
           name: "Show",
           dataType: "boolean",
+          defaultValue: false,
         },
         link: {
           name: "Link",
           dataType: "string",
+          url: true,
         },
         text: {
           name: "Display Text",
@@ -177,6 +172,7 @@ export const postCollection = buildCollection<Post>({
         show: {
           name: "Show",
           dataType: "boolean",
+          defaultValue: false,
         },
         socials: {
           name: "Socials",
