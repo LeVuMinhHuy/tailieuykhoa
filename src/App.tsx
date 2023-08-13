@@ -13,7 +13,10 @@ import { userCollection } from "./collections/users.tsx";
 export default function App() {
   const myAuthenticator: Authenticator<FirebaseUser> = useCallback(
     async ({ user, authController }) => {
-      if (user?.email === "levuminhhuy.compsci@gmail.com") {
+      if (
+        user?.email === "levuminhhuy.compsci@gmail.com" ||
+        user?.email === "quangdinhlam5@gmail.com"
+      ) {
         authController.setExtra({ roles: Roles.ADMIN });
         return true;
       }
