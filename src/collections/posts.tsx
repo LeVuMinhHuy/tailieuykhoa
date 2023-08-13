@@ -18,7 +18,7 @@ export type Post = {
     tags: string[];
   };
   content: {
-    files: string;
+    files: string[];
     text: string;
   };
   views: number;
@@ -72,13 +72,16 @@ export const postCollection = buildCollection<Post>({
       dataType: "map",
       properties: {
         files: {
-          dataType: "string",
+          dataType: "array",
           name: "File",
-          storage: {
-            storagePath: "files",
-            //acceptedFiles: ["image/*", "pdf/*" ],
-            metadata: {
-              cacheControl: "max-age=1000000",
+          of: {
+            dataType: "string",
+            storage: {
+              storagePath: "files",
+              //acceptedFiles: ["image/*", "pdf/*" ],
+              metadata: {
+                cacheControl: "max-age=1000000",
+              },
             },
           },
         },
