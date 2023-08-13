@@ -4,6 +4,7 @@ import { PostCategories, PostStatus, ShareSocial } from "../enums/posts.enum";
 
 export type Post = {
   title: string;
+  slug: string;
   content: {
     files: string[];
     text: string;
@@ -56,6 +57,12 @@ export const postCollection = buildCollection<Post>({
     title: {
       name: "Title",
       validation: { required: true, requiredMessage: "Title is required" },
+      dataType: "string",
+      multiline: true,
+    },
+    slug: {
+      name: "Slug",
+      validation: { required: true, requiredMessage: "Slug is required" },
       dataType: "string",
       multiline: true,
     },
