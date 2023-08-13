@@ -62,7 +62,7 @@ export const postCollection = buildCollection<Post>({
     },
     slug: {
       name: "Slug",
-      validation: { required: true, requiredMessage: "Slug is required" },
+      validation: { unique: true },
       dataType: "string",
       multiline: true,
     },
