@@ -11,31 +11,24 @@ export type Post = {
   }[];
   folders: EntityReference[];
   categories: string[];
-  status: PostStatus;
+  //status: PostStatus;
   publish_metadata: {
     date: Date;
     publisher: EntityReference;
     tags: string[];
   };
-  download: {
-    show: boolean;
-    link: string;
-    text: string;
-  };
-  share: {
-    show: boolean;
-    socials: ShareSocial[];
-  };
-  views: number;
+  //download: {
+  //  show: boolean;
+  //  link: string;
+  //  text: string;
+  //};
+  //share: {
+  //  show: boolean;
+  //  socials: ShareSocial[];
+  //};
+  //views: number;
   metadata: object;
   related_posts: EntityReference[];
-};
-
-type Publisher = {
-  name: string;
-  avatar: string;
-  link: string;
-  id: string;
 };
 
 export const postCollection = buildCollection<Post>({
@@ -104,11 +97,11 @@ export const postCollection = buildCollection<Post>({
         previewProperties: ["name", "parents"],
       },
     },
-    status: {
-      dataType: "string",
-      name: "Status",
-      enumValues: PostStatus,
-    },
+    //status: {
+    //  dataType: "string",
+    //  name: "Status",
+    //  enumValues: PostStatus,
+    //},
     categories: {
       name: "Categories",
       validation: { required: true },
@@ -125,6 +118,7 @@ export const postCollection = buildCollection<Post>({
         date: {
           name: "Date",
           dataType: "date",
+          autoValue: "on_update",
         },
         publisher: {
           name: "Publisher",
@@ -134,8 +128,6 @@ export const postCollection = buildCollection<Post>({
         },
         tags: {
           name: "Tags",
-          description: "Example of generic array",
-          //validation: { required: true },
           dataType: "array",
           of: {
             dataType: "string",
@@ -144,54 +136,54 @@ export const postCollection = buildCollection<Post>({
       },
       expanded: true,
     },
-    views: {
-      name: "Views",
-      validation: {
-        min: 0,
-      },
-      dataType: "number",
-    },
-    download: {
-      name: "Download Options",
-      dataType: "map",
-      properties: {
-        show: {
-          name: "Show",
-          dataType: "boolean",
-          defaultValue: false,
-        },
-        link: {
-          name: "Link",
-          dataType: "string",
-          url: true,
-        },
-        text: {
-          name: "Display Text",
-          dataType: "string",
-        },
-      },
-      expanded: true,
-    },
-    share: {
-      name: "Share Options",
-      dataType: "map",
-      properties: {
-        show: {
-          name: "Show",
-          dataType: "boolean",
-          defaultValue: false,
-        },
-        socials: {
-          name: "Socials",
-          dataType: "array",
-          of: {
-            dataType: "string",
-            enumValues: ShareSocial,
-          },
-        },
-      },
-      expanded: true,
-    },
+    //views: {
+    //  name: "Views",
+    //  validation: {
+    //    min: 0,
+    //  },
+    //  dataType: "number",
+    //},
+    //download: {
+    //  name: "Download Options",
+    //  dataType: "map",
+    //  properties: {
+    //    show: {
+    //      name: "Show",
+    //      dataType: "boolean",
+    //      defaultValue: false,
+    //    },
+    //    link: {
+    //      name: "Link",
+    //      dataType: "string",
+    //      url: true,
+    //    },
+    //    text: {
+    //      name: "Display Text",
+    //      dataType: "string",
+    //    },
+    //  },
+    //  expanded: true,
+    //},
+    //share: {
+    //  name: "Share Options",
+    //  dataType: "map",
+    //  properties: {
+    //    show: {
+    //      name: "Show",
+    //      dataType: "boolean",
+    //      defaultValue: false,
+    //    },
+    //    socials: {
+    //      name: "Socials",
+    //      dataType: "array",
+    //      of: {
+    //        dataType: "string",
+    //        enumValues: ShareSocial,
+    //      },
+    //    },
+    //  },
+    //  expanded: true,
+    //},
     metadata: {
       name: "Metadata",
       dataType: "map",

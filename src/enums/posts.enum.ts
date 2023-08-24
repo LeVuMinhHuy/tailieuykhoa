@@ -5,9 +5,9 @@ export enum ShareSocial {
 }
 
 export enum PostCategories {
-  Documents = "Documents",
-  Exams = "Exams",
-  Books = "Books",
+  Documents = "Tài liệu",
+  Exams = "Đề thi",
+  Books = "Sách",
 }
 
 export enum PostStatus {
