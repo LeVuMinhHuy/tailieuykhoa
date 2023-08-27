@@ -5,10 +5,10 @@ import { Authenticator, FirebaseCMSApp } from "firecms";
 import "typeface-rubik";
 import "@fontsource/ibm-plex-mono";
 import { firebaseConfig } from "./firebase-config.ts";
-import { postCollection } from "./collections/posts.tsx";
+import { postCollection } from "./collections/posts.ts";
 import { Roles } from "./consts/auth.consts.ts";
-import { folderCollection } from "./collections/folders.tsx";
-import { userCollection } from "./collections/users.tsx";
+import { folderCollection } from "./collections/folders.ts";
+import { userCollection } from "./collections/users.ts";
 import { affiliateCollection } from "./collections/affiliate.ts";
 
 export default function App() {
