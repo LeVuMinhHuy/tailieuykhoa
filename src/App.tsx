@@ -9,6 +9,7 @@ import { postCollection } from "./collections/posts.tsx";
 import { Roles } from "./consts/auth.consts.ts";
 import { folderCollection } from "./collections/folders.tsx";
 import { userCollection } from "./collections/users.tsx";
+import { affiliateCollection } from "./collections/affiliate.ts";
 
 export default function App() {
   const myAuthenticator: Authenticator<FirebaseUser> = useCallback(
@@ -38,7 +39,12 @@ export default function App() {
       name={"Tài liệu y khoa"}
       plugins={[dataEnhancementPlugin]}
       authentication={myAuthenticator}
-      collections={[postCollection, folderCollection, userCollection]}
+      collections={[
+        postCollection,
+        folderCollection,
+        userCollection,
+        affiliateCollection,
+      ]}
       firebaseConfig={firebaseConfig}
     />
   );
