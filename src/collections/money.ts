@@ -1,15 +1,15 @@
 import { buildCollection } from "firecms";
 import { Roles } from "../consts/auth.consts";
 
-export type Affiliate = {
+export type Money = {
   endpoint: string;
   expiration: number;
 };
 
-export const affiliateCollection = buildCollection<Affiliate>({
-  name: "Affiliate",
-  singularName: "Affiliate",
-  path: "affiliate",
+export const moneyCollection = buildCollection<Money>({
+  name: "Money",
+  singularName: "Money",
+  path: "money",
   icon: "paid",
   group: "Data",
   permissions: ({ authController }) => {
@@ -26,7 +26,7 @@ export const affiliateCollection = buildCollection<Affiliate>({
       name: "Endpoint",
       validation: {
         required: true,
-        requiredMessage: "Username is required",
+        requiredMessage: "Endpoint is required",
         unique: true,
       },
       dataType: "string",

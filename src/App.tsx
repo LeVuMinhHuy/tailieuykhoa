@@ -9,7 +9,7 @@ import { postCollection } from "./collections/posts.ts";
 import { Roles } from "./consts/auth.consts.ts";
 import { folderCollection } from "./collections/folders.ts";
 import { userCollection } from "./collections/users.ts";
-import { affiliateCollection } from "./collections/affiliate.ts";
+import { moneyCollection } from "./collections/money.ts";
 
 export default function App() {
   const myAuthenticator: Authenticator<FirebaseUser> = useCallback(
@@ -43,7 +43,7 @@ export default function App() {
         postCollection,
         folderCollection,
         userCollection,
-        affiliateCollection,
+        moneyCollection,
       ]}
       firebaseConfig={firebaseConfig}
     />
