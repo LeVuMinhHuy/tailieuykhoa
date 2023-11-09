@@ -8,7 +8,7 @@ export type Post = {
   content: {
     files: string[];
     text: string;
-    textFiles: string;
+    textLink: string;
   }[];
   folders: EntityReference[];
   categories: string[];
@@ -86,9 +86,9 @@ export const postCollection = buildCollection<Post>({
             name: "Text",
             markdown: true,
           },
-          textFiles: {
+          textLink: {
             dataType: "string",
-            name: "Text File",
+            name: "Text Link",
             markdown: true,
           },
         },
